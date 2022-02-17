@@ -10,20 +10,19 @@ class ViewActions extends React.Component {
         this.state = {
             actionNotesList: [],
             actionList: [],
-
             action_id: 0,
             showCommentForm: false,
             token: cookies.get('auth'),
             email: cookies.get('email'),
             note: '',
             role: cookies.get('role'),
-            responseTypeList: [{ Id: 0, Description: '---Select from list-----' }],
-            StatusList: [{ Id: 0, Status: '---Select from list-----' }]
+            responseTypeList: [{ Id: 0, Description: '---Select from list---' }],
+            StatusList: [{ Id: 0, Status: '---Select from list---' }]
         };
     }
 
     componentDidMount() {
-       
+
         var isuserassignee = false;
         if (this.state.role === '1') {
             isuserassignee = false;
@@ -31,7 +30,7 @@ class ViewActions extends React.Component {
         else {
             isuserassignee = true;
         }
-        
+
         fetch(
             "http://localhost:5000/GetActionByEmail", {
             method: 'POST',
@@ -40,6 +39,8 @@ class ViewActions extends React.Component {
         })
             .then((response) => response.json())
             .then((response) => {
+                console.log(response.actions)
+
                 const actions = [];
                 const map = new Map();
                 for (const item of response.actions) {
@@ -51,50 +52,55 @@ class ViewActions extends React.Component {
                             firstname: item.firstname,
                             disposition_type: item.disposition_type,
                             notes: item.notes,
-                            Status: item.Status
+                            Status: item.Status,
+                            ResponseType: item.ResponseType
                         });
                     }
-                }            
+                }
                 const actionNotes = [];
-                response.actions.forEach((notes) => {
+                // response.actions.forEach((notes) => {
 
-                    actionNotes.push({ id: notes.id, comment: notes.response_note });
+                //     actionNotes.push({ id: notes.id, comment: notes.response_note });
+                // });
+
+                response.owner_action_note.forEach((notes) => {
+
+                    actionNotes.push({ id: notes.action_id, comment: notes.comment });
                 });
-               
+
+                response.assignee_action_note.forEach((notes) => {
+
+                    actionNotes.push({ id: notes.action_id, comment: notes.comment });
+                });
+
                 this.setState({
                     actionList: actions
                 });
                 this.setState({
                     actionNotesList: actionNotes
-                });                
+                });
             });
         if (isuserassignee) {
-            console.log(isuserassignee);
             fetch(
                 "http://localhost:5000/GetResponseType", {
                 method: 'Get'
             })
                 .then((response) => response.json())
                 .then((response) => {
-
                     const newList = this.state.responseTypeList.concat(response.result);
-                    console.log(newList);
                     this.setState({
                         responseTypeList: newList
                     });
                 });
         }
-        else{
-            console.log(isuserassignee);
+        else {
             fetch(
                 "http://localhost:5000/GetActionStatus", {
                 method: 'Get'
             })
                 .then((response) => response.json())
                 .then((response) => {
-
                     const newList = this.state.StatusList.concat(response.result);
-                    console.log(newList);
                     this.setState({
                         StatusList: newList
                     });
@@ -125,8 +131,6 @@ class ViewActions extends React.Component {
     }
 
     submitResponseType = (event) => {
-        console.log(event.target.getAttribute("actionid"))
-        console.log(event)
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -141,8 +145,6 @@ class ViewActions extends React.Component {
     }
 
     updateActionStatus = (event) => {
-        console.log(event.target.getAttribute("actionid"))
-        console.log(event)
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -157,21 +159,9 @@ class ViewActions extends React.Component {
     }
     render() {
         const { showCommentForm } = this.state;
-        const { actionNotesList } = this.state;
-        //     const tableStyle = {
-        //         'border-collapse': 'collapse';
-        // font-family: 'Tahoma, Geneva, sans-serif';
-        //       };
-        //       const tdStyle = {
-        //         padding: '15px';
-        //       };
-        //       const divStyle = {
-        //         color: 'blue',
-        //         backgroundImage: 'url(' + imgUrl + ')',
-        //       };
         return (
             <div className="container">
-                <h1>Driver monitoring: All monitoring actions</h1>               
+                <h1>Driver monitoring: All monitoring actions</h1>
                 <table>
                     <thead>
                         <tr>
@@ -179,7 +169,7 @@ class ViewActions extends React.Component {
                             <th>Created by</th>
                             <th>Dispostion Type</th>
                             <th>Note</th>
-                            <th>Status</th>
+
                             {
                                 this.state.role != 1 ?
                                     <th>Response Type</th>
@@ -195,23 +185,23 @@ class ViewActions extends React.Component {
                                 <td style={{ width: '100%', border: "1px solid" }}>{action.Firstname}</td>
                                 <td style={{ width: '100%', border: "1px solid" }}>{action.disposition_type}</td>
                                 <td style={{ width: '100%', border: "1px solid" }}>{action.notes}</td>
-                                <td style={{ width: '100%', border: "1px solid" }}>{action.Status}</td>
+                                {/* <td style={{ width: '100%', border: "1px solid" }}>{action.Status}</td> */}
                                 {
                                     this.state.role != 1 ?
                                         <td style={{ width: '100%', border: "1px solid" }}>
-                                            <select name='response_type_id' actionid={action.id} onChange={e => this.submitResponseType(e)}>
+                                            <select name='response_type_id' actionid={action.id} value={action.ResponseType} onChange={e => this.submitResponseType(e)}>
                                                 {this.state.responseTypeList.map(response => (
                                                     <option key={response.Id} name='response_type_id' value={response.Id} >{response.Description}</option>
                                                 ))}
                                             </ select>
                                         </td>
                                         : <td style={{ width: '100%', border: "1px solid" }}>
-                                        <select name='status_id' actionid={action.id} onChange={e => this.updateActionStatus(e)}>
-                                            {this.state.StatusList.map(status => (
-                                                <option key={status.Id} name='status_id' value={status.Id} >{status.Status}</option>
-                                            ))}
-                                        </ select>
-                                    </td>
+                                            <select name='status_id' actionid={action.id} value={action.Status} onChange={e => this.updateActionStatus(e)}>
+                                                {this.state.StatusList.map(status => (
+                                                    <option key={status.Id} name='status_id' value={status.Id} >{status.Status}</option>
+                                                ))}
+                                            </ select>
+                                        </td>
                                 }
 
                                 <td>{
@@ -239,9 +229,6 @@ class ViewActions extends React.Component {
                         :
                         <></>
                 }
-
-
-
             </div>
 
         );

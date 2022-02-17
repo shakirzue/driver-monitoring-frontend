@@ -27,8 +27,7 @@ class MyForm extends React.Component {
       .then((response) => response.json())
       .then((response) => {
 
-        const newList = this.state.stakeholdersList.concat(response.result);
-        console.log(newList);
+        const newList = this.state.stakeholdersList.concat(response.result);      
         this.setState({
           stakeholdersList: newList
         });
@@ -41,9 +40,7 @@ class MyForm extends React.Component {
     })
       .then((response) => response.json())
       .then((response) => {
-
-        const newList = this.state.dispositionList.concat(response.result);
-        console.log(newList);
+        const newList = this.state.dispositionList.concat(response.result);       
         this.setState({
           dispositionList: newList
         });

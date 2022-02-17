@@ -11,8 +11,18 @@ const Dashboard = (props) => {
     const [email, setEmail] = useState();
     const [roleList, setRoleList] = useState([]);
     useEffect(() => {
-        console.log(props.role);
+        setToken(cookies.get('auth'));
+        setEmail(cookies.get('email'));
         setRole(cookies.get("role"))
+
+        var isuserassignee = false;
+        if (roleId === '1') {
+            isuserassignee = false;
+        }
+        else {
+            isuserassignee = true;
+        }
+
         fetch(
             'http://localhost:5000/GetRole',
             {
@@ -22,17 +32,14 @@ const Dashboard = (props) => {
             .then((response) => response.json())
             .then((response) => {
                 const newList = roleList.concat(response.result);
-                console.log(newList.filter(name => name.Id=== props.role));
-                // setRoleList(
-                //     newList.filter(name => name.Id === props.role)
-                // );
-               
-                console.log(roleList);
-
             });
+
+
+
+
     }, []);
     const handleLogout = () => {
-       
+
         setToken(cookies.get('auth'));
         setEmail(cookies.get('email'));
 
@@ -57,21 +64,20 @@ const Dashboard = (props) => {
     };
 
     return (
-
         <div className="App" >
-            
             <div onClick={handleLogout}>Logout</div>
             {
-roleId == 1 ?
-                <Iframe />
-                : <></>
+                roleId == 1 ?
+                    <Iframe />
+                    : <></>
             }
-           { roleId == 1 ?
-            <Link to="/create-action">create action</Link>
-            :
-            <></>
-           }
+            {roleId == 1 ?
+                <Link to="/create-action">create action</Link>
+                :
+                <></>
+            }
             <Link to="/view-actions" state={{ role: roleId }}>view action</Link>
+            <ViewTotalActionCount />
         </div>
     );
 };

@@ -13,6 +13,7 @@ import Login from "./components/login.js";
 import Home from "./components/home.js";
 import CreateAction from "./components/create-action";
 import ViewActions from "./components/view-actions";
+import ViewTotalActionCount from "./components/Total-action-count";
 function App() {
   return (
     <div className="App">     
@@ -25,6 +26,7 @@ function App() {
             <Route path="/dashboard/" element={<Dashboard />} />
             <Route path="/create-action/" element={<CreateAction />} />
             <Route path="/view-actions/" element={<ViewActions />} />
+            <Route path="/view-actions/" element={<ViewTotalActionCount />} />
           </Routes >
         </div>
       </Router>
