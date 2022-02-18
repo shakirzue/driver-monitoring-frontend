@@ -179,7 +179,7 @@ class ViewActions extends React.Component {
 
                 {
                     showChat == true ?
-                    <ActionChats  actionid={actionId} role={this.state.role} />
+                    <ActionChats  actionid={this.state.action_id} role={this.state.role} />
                         :
                         <></>
                 }
