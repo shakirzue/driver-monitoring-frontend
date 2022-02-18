@@ -4,6 +4,7 @@ import Iframe from './drivers-states.js';
 import Cookies from 'universal-cookie';
 import { Link } from "react-router-dom";
 import ViewTotalActionCount from "./Total-action-count";
+import '../css/main.css';
 
 const Dashboard = (props) => {
     const cookies = new Cookies();

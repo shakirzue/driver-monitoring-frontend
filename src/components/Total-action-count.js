@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Cookies from 'universal-cookie';
+import '../css/main.css';
 
 class ViewTotalActionCount extends React.Component {
 
@@ -11,10 +12,7 @@ class ViewTotalActionCount extends React.Component {
             token: cookies.get('auth'),
             email: cookies.get('email'),
             countList: []
-        }
-        // this.setState({token:cookies.get('auth')});
-        // this.setState({email:cookies.get('email')});
-        // this.setState({roleId:cookies.get('role')});
+        }        
     }
     componentDidMount() {
         var isuserassignee = false;
@@ -47,9 +45,9 @@ class ViewTotalActionCount extends React.Component {
             <div>
                  <h1>Action status</h1>
                 {this.state.countList.map(count => (
-                    <table>
+                    <table className="center">
                         <thead>
-                            <tr><td><h1>{count.status}</h1></td></tr>
+                            <tr><td> Total number of {count.status} actions</td></tr>
                         </thead>
                         <tbody><tr><td><h3>{count.totalcount}</h3></td></tr></tbody>
 

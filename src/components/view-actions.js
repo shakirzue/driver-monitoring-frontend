@@ -2,9 +2,12 @@ import React from 'react'
 import Cookies from 'universal-cookie';
 import CreateActionNote from './action-note.js';
 import ActionChats from './view-action-notes.js';
-
+import '../css/main.css';
+let chats = {};
 class ViewActions extends React.Component {
+   
     constructor(props) {
+        
         super(props);
         const cookies = new Cookies();
 
@@ -19,7 +22,8 @@ class ViewActions extends React.Component {
             note: '',
             role: cookies.get('role'),
             responseTypeList: [{ Id: 0, Description: '---Select from list---' }],
-            StatusList: [{ Id: 0, Status: '---Select from list---' }]
+            StatusList: [{ Id: 0, Status: '---Select from list---' }],
+
         };
     }
 
@@ -32,7 +36,7 @@ class ViewActions extends React.Component {
         else {
             isuserassignee = true;
         }
-console.log(JSON.stringify({ email: this.state.email, token: this.state.token, isassignee: isuserassignee }));
+
         fetch(
             process.env.REACT_APP_SERVER_API_URL + "GetActionByEmail", {
             method: 'POST',
@@ -115,7 +119,11 @@ console.log(JSON.stringify({ email: this.state.email, token: this.state.token, i
     }
 
     openChat = (actionId) => {
+        console.log(actionId);
+        
         this.setState({ showChat: true, action_id: actionId });
+        
+        
     }
 
     handleChange = (event) => {
@@ -171,17 +179,17 @@ console.log(JSON.stringify({ email: this.state.email, token: this.state.token, i
 
                 {
                     showChat == true ?
-                        <ActionChats actionid={this.state.action_id} role={this.state.role} />
+                    <ActionChats  actionid={actionId} role={this.state.role} />
                         :
                         <></>
                 }
 
                 <h1>Driver monitoring: All monitoring actions</h1>
-                <table>
+                <table className='center'>
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Created by</th>
+                            {/* <th>Created by</th> */}
                             <th>Dispostion Type</th>
                             <th>Note</th>
 
@@ -196,21 +204,21 @@ console.log(JSON.stringify({ email: this.state.email, token: this.state.token, i
                     <tbody>
                         {this.state.actionList.map(action => (
                             <tr key={action.Id}>
-                                <td style={{ width: '100%', border: "1px solid" }}>{action.createdat}</td>
-                                <td style={{ width: '100%', border: "1px solid" }}>{action.Firstname}</td>
-                                <td style={{ width: '100%', border: "1px solid" }}>{action.disposition_type}</td>
-                                <td style={{ width: '100%', border: "1px solid" }}>{action.notes}</td>
+                                <td >{action.createdat}</td>
+                                {/* <td style={{ width: '100%', border: "1px solid" }}>{action.Firstname}</td> */}
+                                <td >{action.disposition_type}</td>
+                                <td >{action.notes}</td>
                                 {/* <td style={{ width: '100%', border: "1px solid" }}>{action.Status}</td> */}
                                 {
                                     this.state.role != 1 ?
-                                        <td style={{ width: '100%', border: "1px solid" }}>
+                                        <td >
                                             <select name='response_type_id' actionid={action.id} value={action.ResponseType} onChange={e => this.submitResponseType(e)}>
                                                 {this.state.responseTypeList.map(response => (
                                                     <option key={response.Id} name='response_type_id' value={response.Id} >{response.Description}</option>
                                                 ))}
                                             </ select>
                                         </td>
-                                        : <td style={{ width: '100%', border: "1px solid" }}>
+                                        : <td >
                                             <select name='status_id' actionid={action.id} value={action.Status} onChange={e => this.updateActionStatus(e)}>
                                                 {this.state.StatusList.map(status => (
                                                     <option key={status.Id} name='status_id' value={status.Id} >{status.Status}</option>
@@ -227,7 +235,7 @@ console.log(JSON.stringify({ email: this.state.email, token: this.state.token, i
 
                                     ))} */}
                                     <button id={action.id}
-                                        style={{ width: '100%', border: "1px solid" }}
+                                        
                                         onClick={() => this.openChat(action.id)}
                                     >
                                         Open chat
@@ -237,7 +245,7 @@ console.log(JSON.stringify({ email: this.state.email, token: this.state.token, i
 
 
                                 <td><button id={action.id}
-                                    style={{ width: '100%', border: "1px solid" }}
+                                    
                                     onClick={() => this.addNotes(action.id)}
                                 >
                                     Add comment
