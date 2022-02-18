@@ -12,17 +12,11 @@ class ViewTotalActionCount extends React.Component {
             email: cookies.get('email'),
             countList: []
         }
-
         // this.setState({token:cookies.get('auth')});
         // this.setState({email:cookies.get('email')});
         // this.setState({roleId:cookies.get('role')});
     }
-
-
-
     componentDidMount() {
-
-
         var isuserassignee = false;
         if (this.state.roleId === '1') {
             isuserassignee = false;
@@ -33,7 +27,7 @@ class ViewTotalActionCount extends React.Component {
 
         console.log(JSON.stringify({ email: this.state.email, token: this.state.token, isassignee: isuserassignee }));
         fetch(
-            'http://localhost:5000/GetActionCountByStatus',
+            process.env.REACT_APP_SERVER_API_URL+'GetActionCountByStatus',
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

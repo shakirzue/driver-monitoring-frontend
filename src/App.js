@@ -25,7 +25,7 @@ function App() {
             {/* <Route path='/Logout' element={<Logout />} /> */}
             <Route path="/dashboard/" element={<Dashboard />} />
             <Route path="/create-action/" element={<CreateAction />} />
-            <Route path="/view-actions/" element={<ViewActions />} />            
+            <Route path="/view-actions/" element={<ViewActions />} />           
           </Routes >
         </div>
       </Router>

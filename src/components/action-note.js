@@ -19,7 +19,7 @@ const ActionNote = (props) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'action_id': action_id, 'note': note, email: cookies.get('email'), token: cookies.get('auth') })
         };
-        fetch('http://localhost:5000/CreateActionNotes', requestOptions)
+        fetch(process.env.REACT_APP_SERVER_API_URL+'CreateActionNotes', requestOptions)
         .then(function (response) {
             response.json();
         }).then((result)=>{

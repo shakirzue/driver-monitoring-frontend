@@ -13,7 +13,7 @@ class Login extends React.Component {
 
     componentDidMount() {
         fetch(
-            "http://localhost:5000/")
+            process.env.REACT_APP_SERVER_API_URL)
             .then((res) => res.text())
             .then((text) => {
                 this.setState({
@@ -30,14 +30,14 @@ class Login extends React.Component {
             body: JSON.stringify({ 'email': document.getElementById('email').value, 'password': document.getElementById('password').value }),
         };
         fetch(
-            "http://localhost:5000/login",
+            process.env.REACT_APP_SERVER_API_URL + "login",
             requestOptions
         )
             .then((response) => response.json())
             .then((response) => {
                 console.log('Success:', response);
                 if (response.success == true) {
-                    const cookies = new Cookies();                   
+                    const cookies = new Cookies();
                     cookies.set('auth', response.auth, { path: '/' });
                     cookies.set('email', response.email, { path: '/' });
                     cookies.set('role', response.role, { path: '/' });

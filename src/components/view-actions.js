@@ -32,7 +32,7 @@ class ViewActions extends React.Component {
         }
 
         fetch(
-            "http://localhost:5000/GetActionByEmail", {
+            process.env.REACT_APP_SERVER_API_URL+"GetActionByEmail", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: this.state.email, token: this.state.token, isassignee: isuserassignee })
@@ -82,7 +82,7 @@ class ViewActions extends React.Component {
             });
         if (isuserassignee) {
             fetch(
-                "http://localhost:5000/GetResponseType", {
+                process.env.REACT_APP_SERVER_API_URL+"GetResponseType", {
                 method: 'Get'
             })
                 .then((response) => response.json())
@@ -95,7 +95,7 @@ class ViewActions extends React.Component {
         }
         else {
             fetch(
-                "http://localhost:5000/GetActionStatus", {
+                process.env.REACT_APP_SERVER_API_URL+"GetActionStatus", {
                 method: 'Get'
             })
                 .then((response) => response.json())
@@ -122,7 +122,7 @@ class ViewActions extends React.Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'action_id': this.state.action_id, 'note': this.state.note, email: this.state.email, token: this.state.token })
         };
-        fetch('http://localhost:5000/CreateActionNotes', requestOptions).then(function (response) {
+        fetch(process.env.REACT_APP_SERVER_API_URL+'CreateActionNotes', requestOptions).then(function (response) {
             console.log(response)
             return response.json();
         });
@@ -136,7 +136,7 @@ class ViewActions extends React.Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'action_id': event.target.getAttribute("actionid"), 'response_type_id': event.target.value })
         };
-        fetch('http://localhost:5000/UpdateActionResponseType', requestOptions).then(function (response) {
+        fetch(process.env.REACT_APP_SERVER_API_URL+'UpdateActionResponseType', requestOptions).then(function (response) {
             console.log(response)
             return response.json();
         });
@@ -150,7 +150,7 @@ class ViewActions extends React.Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'action_id': event.target.getAttribute("actionid"), 'status_id': event.target.value })
         };
-        fetch('http://localhost:5000/UpdateActionStatus', requestOptions).then(function (response) {
+        fetch(process.env.REACT_APP_SERVER_API_URL+'UpdateActionStatus', requestOptions).then(function (response) {
             console.log(response)
             return response.json();
         });

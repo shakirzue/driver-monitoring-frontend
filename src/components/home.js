@@ -20,7 +20,7 @@ const Home = () => {
             setRole(cookies.get('role'));
         }
         fetch(
-            "http://localhost:5000/")
+            process.env.REACT_APP_SERVER_API_URL)
             .then((res) => res.text())
             .then((text) => {
                 setText(text);

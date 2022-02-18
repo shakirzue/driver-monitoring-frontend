@@ -19,7 +19,7 @@ class MyForm extends React.Component {
 
   componentDidMount() {
     fetch(
-      "http://localhost:5000/GetStakeholders", {
+      process.env.REACT_APP_SERVER_API_URL+"GetStakeholders", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: this.state.email, token: this.state.token })
@@ -35,7 +35,7 @@ class MyForm extends React.Component {
 
 
     fetch(
-      "http://localhost:5000/GetDisposition", {
+      process.env.REACT_APP_SERVER_API_URL+"GetDisposition", {
       method: 'Get'
     })
       .then((response) => response.json())
@@ -60,7 +60,7 @@ class MyForm extends React.Component {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(this.state)
     };
-    fetch('http://localhost:5000/CreateAction', requestOptions).then(function (response) {
+    fetch(process.env.REACT_APP_SERVER_API_URL+'CreateAction', requestOptions).then(function (response) {
       console.log(response)
       return response.json();
     });

@@ -4,6 +4,7 @@ import Iframe from './drivers-states.js';
 import Cookies from 'universal-cookie';
 import { Link } from "react-router-dom";
 import ViewTotalActionCount from "./Total-action-count";
+
 const Dashboard = (props) => {
     const cookies = new Cookies();
     const [roleId, setRole] = useState();
@@ -24,7 +25,7 @@ const Dashboard = (props) => {
         }
 
         fetch(
-            'http://localhost:5000/GetRole',
+            process.env.REACT_APP_SERVER_API_URL+'GetRole',
             {
                 method: 'GET'
             }
@@ -33,10 +34,6 @@ const Dashboard = (props) => {
             .then((response) => {
                 const newList = roleList.concat(response.result);
             });
-
-
-
-
     }, []);
     const handleLogout = () => {
 
@@ -47,7 +44,7 @@ const Dashboard = (props) => {
             cookies.remove("auth");
             cookies.remove("email");
             fetch(
-                'http://localhost:5000/logout',
+                process.env.REACT_APP_SERVER_API_URL+'logout',
                 {
                     method: 'GET'
                 }
