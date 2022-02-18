@@ -1,6 +1,7 @@
 import React from 'react'
 import Cookies from 'universal-cookie';
-import ActionNote from './action-note.js';
+import CreateActionNote from './action-note.js';
+import ActionChats from './view-action-notes.js';
 
 class ViewActions extends React.Component {
     constructor(props) {
@@ -12,6 +13,7 @@ class ViewActions extends React.Component {
             actionList: [],
             action_id: 0,
             showCommentForm: false,
+            showChat: false,
             token: cookies.get('auth'),
             email: cookies.get('email'),
             note: '',
@@ -30,9 +32,9 @@ class ViewActions extends React.Component {
         else {
             isuserassignee = true;
         }
-
+console.log(JSON.stringify({ email: this.state.email, token: this.state.token, isassignee: isuserassignee }));
         fetch(
-            process.env.REACT_APP_SERVER_API_URL+"GetActionByEmail", {
+            process.env.REACT_APP_SERVER_API_URL + "GetActionByEmail", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: this.state.email, token: this.state.token, isassignee: isuserassignee })
@@ -82,7 +84,7 @@ class ViewActions extends React.Component {
             });
         if (isuserassignee) {
             fetch(
-                process.env.REACT_APP_SERVER_API_URL+"GetResponseType", {
+                process.env.REACT_APP_SERVER_API_URL + "GetResponseType", {
                 method: 'Get'
             })
                 .then((response) => response.json())
@@ -95,7 +97,7 @@ class ViewActions extends React.Component {
         }
         else {
             fetch(
-                process.env.REACT_APP_SERVER_API_URL+"GetActionStatus", {
+                process.env.REACT_APP_SERVER_API_URL + "GetActionStatus", {
                 method: 'Get'
             })
                 .then((response) => response.json())
@@ -112,6 +114,10 @@ class ViewActions extends React.Component {
         this.setState({ showCommentForm: true, action_id: actionId });
     }
 
+    openChat = (actionId) => {
+        this.setState({ showChat: true, action_id: actionId });
+    }
+
     handleChange = (event) => {
         this.setState({ [event.target.name]: event.target.value });
     }
@@ -122,7 +128,7 @@ class ViewActions extends React.Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'action_id': this.state.action_id, 'note': this.state.note, email: this.state.email, token: this.state.token })
         };
-        fetch(process.env.REACT_APP_SERVER_API_URL+'CreateActionNotes', requestOptions).then(function (response) {
+        fetch(process.env.REACT_APP_SERVER_API_URL + 'CreateActionNotes', requestOptions).then(function (response) {
             console.log(response)
             return response.json();
         });
@@ -136,7 +142,7 @@ class ViewActions extends React.Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'action_id': event.target.getAttribute("actionid"), 'response_type_id': event.target.value })
         };
-        fetch(process.env.REACT_APP_SERVER_API_URL+'UpdateActionResponseType', requestOptions).then(function (response) {
+        fetch(process.env.REACT_APP_SERVER_API_URL + 'UpdateActionResponseType', requestOptions).then(function (response) {
             console.log(response)
             return response.json();
         });
@@ -150,7 +156,7 @@ class ViewActions extends React.Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 'action_id': event.target.getAttribute("actionid"), 'status_id': event.target.value })
         };
-        fetch(process.env.REACT_APP_SERVER_API_URL+'UpdateActionStatus', requestOptions).then(function (response) {
+        fetch(process.env.REACT_APP_SERVER_API_URL + 'UpdateActionStatus', requestOptions).then(function (response) {
             console.log(response)
             return response.json();
         });
@@ -159,8 +165,17 @@ class ViewActions extends React.Component {
     }
     render() {
         const { showCommentForm } = this.state;
+        const { showChat } = this.state;
         return (
             <div className="container">
+
+                {
+                    showChat == true ?
+                        <ActionChats actionid={this.state.action_id} role={this.state.role} />
+                        :
+                        <></>
+                }
+
                 <h1>Driver monitoring: All monitoring actions</h1>
                 <table>
                     <thead>
@@ -204,20 +219,28 @@ class ViewActions extends React.Component {
                                         </td>
                                 }
 
-                                <td>{
-                                    this.state.actionNotesList.filter(note => note.id == action.id).map((note, index) => (
+                                <td>
+                                    {/* {this.state.actionNotesList.filter(note => note.id == action.id).map((note, index) => (
                                         <p>
                                             {note.comment == null ? "" : note.comment}
                                         </p>
 
-                                    ))}</td>
+                                    ))} */}
+                                    <button id={action.id}
+                                        style={{ width: '100%', border: "1px solid" }}
+                                        onClick={() => this.openChat(action.id)}
+                                    >
+                                        Open chat
+                                    </button>
+
+                                </td>
 
 
                                 <td><button id={action.id}
                                     style={{ width: '100%', border: "1px solid" }}
                                     onClick={() => this.addNotes(action.id)}
                                 >
-                                    Edit
+                                    Add comment
                                 </button></td>
                             </tr>
                         ))}
@@ -225,7 +248,7 @@ class ViewActions extends React.Component {
                 </table>
                 {
                     showCommentForm == true ?
-                        <ActionNote actionid={this.state.action_id} role={this.state.role} />
+                        <CreateActionNote actionid={this.state.action_id} role={this.state.role} />
                         :
                         <></>
                 }
