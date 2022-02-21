@@ -51,7 +51,7 @@ function ViewActionNotes() {
                 <div style={{ border: "1px solid" }}>
                     {
                         actionNotesList.map(note => (
-                            <p >{note.comment}</p>
+                            <p >{note.firstname} : {note.comment}</p>
                         ))
                     }
                 </div>
