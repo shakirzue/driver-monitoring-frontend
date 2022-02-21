@@ -1,20 +1,6 @@
 import React, {  useEffect } from 'react';
 
 const Iframe = () => {
-    // const [src, setSource] = useState("");
-    // const [title, setSource] = useState("");
-    // const [allowfullscreen, setFullScreenFlag] = useState("")
-    // useEffect(() => {
-    //     fetch(
-    //         "http://localhost:5000/iframe")
-    //         .then((response) => response.json())
-    //         .then((response) => {
-    //             console.log()
-    //             // setSource(text);
-    //         });
-    // });
-
-
     return (
         // basic bootstrap classes. you can change with yours.
         <div className="col-md-12">

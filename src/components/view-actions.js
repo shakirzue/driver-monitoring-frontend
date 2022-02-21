@@ -2,12 +2,13 @@ import React from 'react'
 import Cookies from 'universal-cookie';
 import CreateActionNote from './action-note.js';
 import ActionChats from './view-action-notes.js';
+import { Link } from "react-router-dom";
 import '../css/main.css';
 let chats = {};
 class ViewActions extends React.Component {
-   
+
     constructor(props) {
-        
+
         super(props);
         const cookies = new Cookies();
 
@@ -120,10 +121,10 @@ class ViewActions extends React.Component {
 
     openChat = (actionId) => {
         console.log(actionId);
-        
+
         this.setState({ showChat: true, action_id: actionId });
-        
-        
+
+
     }
 
     handleChange = (event) => {
@@ -176,13 +177,16 @@ class ViewActions extends React.Component {
         const { showChat } = this.state;
         return (
             <div className="container">
-
+                {/* 
                 {
-                    showChat == true ?
-                    <ActionChats  actionid={this.state.action_id} role={this.state.role} />
-                        :
-                        <></>
-                }
+                    // showChat == true ?
+                    //     <Link to={'/view-action-notes'} state={{ actionid: this.state.action_id, role=this.state.role }}>
+                    //         Next
+                    //     </Link>
+                    //     // <ActionChats  actionid={this.state.action_id} role={this.state.role} />
+                    //     :
+                    //     <></>
+                } */}
 
                 <h1>Driver monitoring: All monitoring actions</h1>
                 <table className='center'>
@@ -234,18 +238,17 @@ class ViewActions extends React.Component {
                                         </p>
 
                                     ))} */}
-                                    <button id={action.id}
-                                        
-                                        onClick={() => this.openChat(action.id)}
-                                    >
+                                    {/* <button id={action.id} onClick={() => this.openChat(action.id)} >
                                         Open chat
-                                    </button>
-
+                                    </button> */}
+                                    <Link to={'/view-action-notes'} state={{ actionid: action.id }}>
+                                        Open chat
+                                    </Link>
                                 </td>
 
 
                                 <td><button id={action.id}
-                                    
+
                                     onClick={() => this.addNotes(action.id)}
                                 >
                                     Add comment
