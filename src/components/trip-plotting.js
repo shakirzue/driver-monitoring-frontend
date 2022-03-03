@@ -125,9 +125,7 @@ export class MapContainer extends Component {
             showMap: true,
             googleMapCenterlatitude: this.state.activityCoordinates[0].latitude ,
             googleMapCenterlongitude: this.state.activityCoordinates[0].longitude 
-        });
-        console.log(this.state.googleMapCenterlongitude);
-        console.log(this.state.googleMapCenterlatitude);
+        });       
     }
     render() {
         return (

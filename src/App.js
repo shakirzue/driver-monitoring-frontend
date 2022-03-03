@@ -16,7 +16,7 @@ import ViewActions from "./components/view-actions";
 import CallAndLocationChecks from "./components/call-location-check-view";
 
 import ViewActionNotes from "./components/view-action-notes";
-import TripPloting from "./components/trip-ploting";
+import TripPlotting from "./components/trip-plotting";
 
 import Navbar from "./components/UI/Navbar/Navbar";
 
@@ -36,7 +36,7 @@ function App() {
             <Route path="/view-actions/" element={<ViewActions />} />
             <Route path="/view-action-notes/" element={<ViewActionNotes />} />    
             <Route path="/call-location-check-view/" element={<CallAndLocationChecks />} />
-            <Route path="/trip-ploting/" element={<TripPloting />} />        
+            <Route path="/trip-plotting/" element={<TripPlotting />} />        
           </Routes >
         </div>
       </Router>
